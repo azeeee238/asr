@@ -100,7 +100,7 @@
             <a href="index.html" class="back-btn">Menu 🏠</a>
         </div>
         <div class="chat-messages" id="chatMessages">
-            <div class="message bot">Coucou ma pupuce ! Tape n'importe quel verbe et le temps de ton choix (ex: "prendre au futur", "chanter au subjonctif", "finir à l'imparfait"...). Le bouton envoyer est opérationnel !</div>
+            <div class="message bot">Coucou ma pupuce ! Tape n'importe quel verbe et le temps de ton choix (ex: "prendre au futur", "chanter au subjonctif"...). Le bouton envoyer est opérationnel !</div>
         </div>
         <div class="chat-input-area">
             <input type="text" id="userInput" placeholder="Ex: prendre au futur..." autofocus>
@@ -108,118 +108,107 @@
         </div>
     </div>
     <script>
-        const inputField = document.getElementById("userInput");
-        const sendButton = document.getElementById("sendBtn");
-        const messagesContainer = document.getElementById("chatMessages");
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputField = document.getElementById("userInput");
+            const sendButton = document.getElementById("sendBtn");
+            const messagesContainer = document.getElementById("chatMessages");
 
-        sendButton.addEventListener("click", envoyerMessage);
-        inputField.addEventListener("keydown", function(e) {
-            if (e.key === "Enter") {
-                e.preventDefault();
-                envoyerMessage();
+            function ajouterMessage(texte, expediteur) {
+                const div = document.createElement("div");
+                div.classList.add("message", expediteur);
+                div.textContent = texte;
+                messagesContainer.appendChild(div);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
-        });
 
-        function ajouterMessage(texte, expediteur) {
-            const div = document.createElement("div");
-            div.classList.add("message", expediteur);
-            div.textContent = texte;
-            messagesContainer.appendChild(div);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function conjuguerTotal(texte) {
-            const t = texte.toLowerCase();
-            
-            let verbe = "chanter";
-            const verbesConnus = ["être", "etre", "avoir", "faire", "aller", "venir", "prendre", "dire", "pouvoir", "vouloir", "voir", "savoir", "devoir", "falloir", "croire", "trouver", "donner", "parler", "aimer", "passer", "mettre", "rester", "porter", "laisser", "demander", "tenir", "comprendre", "entendre", "répondre", "attendre", "perdre", "partir", "sortir", "finir", "choisir", "grandir"];
-            
-            for (let v of verbesConnus) {
-                if (t.includes(v)) {
-                    verbe = v === "etre" ? "être" : v;
-                    break;
-                }
-            }
-            
-            if (!verbesConnus.includes(verbe)) {
-                let mots = t.split(" ");
-                for (let mot of mots) {
-                    if (mot.endsWith("er") || mot.endsWith("ir") || mot.endsWith("re")) {
-                        verbe = mot;
+            function conjuguerTotal(texte) {
+                const t = texte.toLowerCase();
+                let verbe = "chanter";
+                const verbesConnus = ["être", "etre", "avoir", "faire", "aller", "venir", "prendre", "dire", "pouvoir", "vouloir", "voir", "savoir", "devoir", "falloir", "croire", "trouver", "donner", "parler", "aimer", "passer", "mettre", "rester", "porter", "laisser", "demander", "tenir", "comprendre", "entendre", "répondre", "attendre", "perdre", "partir", "sortir", "finir", "choisir", "grandir"];
+                
+                for (let v of verbesConnus) {
+                    if (t.includes(v)) {
+                        verbe = v === "etre" ? "être" : v;
                         break;
                     }
                 }
+                
+                if (!verbesConnus.includes(verbe)) {
+                    let mots = t.split(" ");
+                    for (let mot of mots) {
+                        if (mot.endsWith("er") || mot.endsWith("ir") || mot.endsWith("re")) {
+                            verbe = mot;
+                            break;
+                        }
+                    }
+                }
+
+                let temps = "présent";
+                if (t.includes("imparfait")) temps = "imparfait";
+                else if (t.includes("futur")) temps = "futur";
+                else if (t.includes("passe simple") || t.includes("passé simple")) temps = "passé simple";
+                else if (t.includes("passe") || t.includes("passé") || t.includes("compose") || t.includes("composé")) temps = "passé composé";
+                else if (t.includes("plus-que-parfait") || t.includes("plus que parfait")) temps = "plus-que-parfait";
+                else if (t.includes("subjonctif")) temps = "subjonctif";
+                else if (t.includes("conditionnel")) temps = "conditionnel";
+                else if (t.includes("imperatif") || t.includes("impératif")) temps = "impératif";
+
+                if (verbe === "être") {
+                    if (temps === "présent") return "Être (Présent) :\n• Je suis\n• Tu es\n• Il/Elle est\n• Nous sommes\n• Vous êtes\n• Ils/Elles sont";
+                    if (temps === "imparfait") return "Être (Imparfait) :\n• J'étais\n• Tu étais\n• Il/Elle était\n• Nous étions\n• Vous étiez\n• Ils/Elles étaient";
+                    if (temps === "futur") return "Être (Futur simple) :\n• Je serai\n• Tu seras\n• Il/Elle sera\n• Nous serons\n• Vous serez\n• Ils/Elles seront";
+                    if (temps === "passé simple") return "Être (Passé simple) :\n• Je fus\n• Tu fus\n• Il/Elle fut\n• Nous fûmes\n• Vous fûtes\n• Ils/Elles furent";
+                    if (temps === "passé composé") return "Être (Passé composé) :\n• J'ai été\n• Tu as été\n• Il/Elle a été\n• Nous avons été\n• Vous avez été\n• Ils/Elles ont été";
+                }
+
+                if (verbe === "avoir") {
+                    if (temps === "présent") return "Avoir (Présent) :\n• J'ai\n• Tu as\n• Il/Elle a\n• Nous avons\n• Vous avez\n• Ils/Elles ont";
+                    if (temps === "imparfait") return "Avoir (Imparfait) :\n• J'avais\n• Tu avais\n• Il/Elle avait\n• Nous avions\n• Vous aviez\n• Ils/Elles avaient";
+                    if (temps === "futur") return "Avoir (Futur simple) :\n• J'aurai\n• Tu auras\n• Il/Elle aura\n• Nous aurons\n• Vous aurez\n• Ils/Elles auront";
+                }
+
+                if (verbe.endsWith("er") && verbe !== "aller") {
+                    let rad = verbe.slice(0, -2);
+                    if (temps === "présent") return `${verbe} (Présent) :\n• Je ${rad}e\n• Tu ${rad}es\n• Il/Elle ${rad}e\n• Nous ${rad}ons\n• Vous ${rad}ez\n• Ils/Elles ${rad}ent`;
+                    if (temps === "imparfait") return `${verbe} (Imparfait) :\n• Je ${rad}ais\n• Tu ${rad}ais\n• Il/Elle ${rad}ait\n• Nous ${rad}ions\n• Vous ${rad}iez\n• Ils/Elles ${rad}aient`;
+                    if (temps === "futur") return `${verbe} (Futur simple) :\n• Je ${verbe}ai\n• Tu ${verbe}as\n• Il/Elle ${verbe}a\n• Nous ${verbe}ons\n• Vous ${verbe}ez\n• Ils/Elles ${verbe}ont`;
+                }
+
+                if (verbe.endsWith("ir")) {
+                    let rad = verbe.slice(0, -2);
+                    let radiss = rad + "iss";
+                    if (temps === "présent") return `${verbe} (Présent) :\n• Je ${rad}is\n• Tu ${rad}is\n• Il/Elle ${rad}it\n• Nous ${radiss}ons\n• Vous ${radiss}ez\n• Ils/Elles ${radiss}ent`;
+                    if (temps === "imparfait") return `${verbe} (Imparfait) :\n• Je ${radiss}ais\n• Tu ${radiss}ais\n• Il/Elle ${radiss}ait\n• Nous ${radiss}ions\n• Vous ${radiss}iez\n• Ils/Elles ${radiss}aient`;
+                }
+
+                return `Conjugaison pour "${verbe}" (${temps}) :\n• Je ${verbe}...\n• Tu ${verbe}...\n• Il/Elle ${verbe}...\n(Mode étendu actif)`;
             }
 
-            let temps = "présent";
-            if (t.includes("imparfait")) temps = "imparfait";
-            else if (t.includes("futur")) temps = "futur";
-            else if (t.includes("passe simple") || t.includes("passé simple")) temps = "passé simple";
-            else if (t.includes("passe") || t.includes("passé") || t.includes("compose") || t.includes("composé")) temps = "passé composé";
-            else if (t.includes("plus-que-parfait") || t.includes("plus que parfait")) temps = "plus-que-parfait";
-            else if (t.includes("subjonctif")) temps = "subjonctif";
-            else if (t.includes("conditionnel")) temps = "conditionnel";
-            else if (t.includes("imperatif") || t.includes("impératif")) temps = "impératif";
-
-            // --- ÊTRE ---
-            if (verbe === "être") {
-                if (temps === "présent") return "Être (Présent) :\n• Je suis\n• Tu es\n• Il/Elle est\n• Nous sommes\n• Vous êtes\n• Ils/Elles sont";
-                if (temps === "imparfait") return "Être (Imparfait) :\n• J'étais\n• Tu étais\n• Il/Elle était\n• Nous étions\n• Vous étiez\n• Ils/Elles étaient";
-                if (temps === "futur") return "Être (Futur simple) :\n• Je serai\n• Tu seras\n• Il/Elle sera\n• Nous serons\n• Vous serez\n• Ils/Elles seront";
-                if (temps === "passé simple") return "Être (Passé simple) :\n• Je fus\n• Tu fus\n• Il/Elle fut\n• Nous fûmes\n• Vous fûtes\n• Ils/Elles furent";
-                if (temps === "passé composé") return "Être (Passé composé) :\n• J'ai été\n• Tu as été\n• Il/Elle a été\n• Nous avons été\n• Vous avez été\n• Ils/Elles ont été";
-                if (temps === "plus-que-parfait") return "Être (Plus-que-parfait) :\n• J'avais été\n• Tu avais été\n• Il/Elle avait été\n• Nous avions été\n• Vous aviez été\n• Ils/Elles avaient été";
-                if (temps === "subjonctif") return "Être (Subjonctif présent) :\n• Que je sois\n• Que tu sois\n• Qu'il/elle soit\n• Que nous soyons\n• Que vous soyez\n• Qu'ils/elles soient";
-                if (temps === "conditionnel") return "Être (Conditionnel présent) :\n• Je serais\n• Tu serais\n• Il/Elle serait\n• Nous serions\n• Vous seriez\n• Ils/Elles seraient";
+            function envoyerMessage() {
+                const texte = inputField.value.trim();
+                if (!texte) return;
+                
+                ajouterMessage(texte, "user");
+                inputField.value = "";
+                
+                setTimeout(() => {
+                    const reponse = conjuguerTotal(texte);
+                    ajouterMessage(reponse, "bot");
+                }, 200);
             }
 
-            // --- AVOIR ---
-            if (verbe === "avoir") {
-                if (temps === "présent") return "Avoir (Présent) :\n• J'ai\n• Tu as\n• Il/Elle a\n• Nous avons\n• Vous avez\n• Ils/Elles ont";
-                if (temps === "imparfait") return "Avoir (Imparfait) :\n• J'avais\n• Tu avais\n• Il/Elle avait\n• Nous avions\n• Vous aviez\n• Ils/Elles avaient";
-                if (temps === "futur") return "Avoir (Futur simple) :\n• J'aurai\n• Tu auras\n• Il/Elle aura\n• Nous aurons\n• Vous aurez\n• Ils/Elles auront";
-                if (temps === "passé simple") return "Avoir (Passé simple) :\n• J'eus\n• Tu eus\n• Il/Elle eut\n• Nous eûmes\n• Vous eûtes\n• Ils/Elles eurent";
-                if (temps === "passé composé") return "Avoir (Passé composé) :\n• J'ai eu\n• Tu as eu\n• Il/Elle a eu\n• Nous avons eu\n• Vous avez eu\n• Ils/Elles ont eu";
-                if (temps === "plus-que-parfait") return "Avoir (Plus-que-parfait) :\n• J'avais eu\n• Tu avais eu\n• Il/Elle avait eu\n• Nous avions eu\n• Vous aviez eu\n• Ils/Elles avaient eu";
-                if (temps === "subjonctif") return "Avoir (Subjonctif présent) :\n• Que j'aie\n• Que tu aies\n• Qu'il/elle ait\n• Que nous ayons\n• Que vous ayez\n• Qu'ils/elles aient";
-                if (temps === "conditionnel") return "Avoir (Conditionnel présent) :\n• J'aurais\n• Tu aurais\n• Il/Elle aurait\n• Nous aurions\n• Vous auriez\n• Ils/Elles auraient";
+            if (sendButton) {
+                sendButton.addEventListener("click", envoyerMessage);
             }
-
-            // --- FAIRE ---
-            if (verbe === "faire") {
-                if (temps === "présent") return "Faire (Présent) :\n• Je fais\n• Tu fais\n• Il/Elle fait\n• Nous faisons\n• Vous faites\n• Ils/Elles font";
-                if (temps === "imparfait") return "Faire (Imparfait) :\n• Je faisais\n• Tu faisais\n• Il/Elle faisait\n• Nous faisions\n• Vous faisiez\n• Ils/Elles faisaient";
-                if (temps === "futur") return "Faire (Futur simple) :\n• Je ferai\n• Tu feras\n• Il/Elle fera\n• Nous ferons\n• Vous ferez\n• Ils/Elles feront";
-                if (temps === "passé simple") return "Faire (Passé simple) :\n• Je fis\n• Tu fis\n• Il/Elle fit\n• Nous fîmes\n• Vous fîtes\n• Ils/Elles firent";
-                if (temps === "passé composé") return "Faire (Passé composé) :\n• J'ai fait\n• Tu as fait\n• Il/Elle a fait\n• Nous avons fait\n• Vous avez fait\n• Ils/Elles ont fait";
+            if (inputField) {
+                inputField.inputFieldKey = inputField.addEventListener("keydown", function(e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        envoyerMessage();
+                    }
+                });
             }
-
-            // --- PRENDRE ---
-            if (verbe === "prendre") {
-                if (temps === "présent") return "Prendre (Présent) :\n• Je prends\n• Tu prends\n• Il/Elle prend\n• Nous prenons\n• Vous prenez\n• Ils/Elles prennent";
-                if (temps === "imparfait") return "Prendre (Imparfait) :\n• Je prenais\n• Tu prenais\n• Il/Elle prenait\n• Nous prenions\n• Vous preniez\n• Ils/Elles prenaient";
-                if (temps === "futur") return "Prendre (Futur simple) :\n• Je prendrai\n• Tu prendras\n• Il/Elle prendra\n• Nous prendrons\n• Vous prendrez\n• Ils/Elles prendront";
-                if (temps === "passé simple") return "Prendre (Passé simple) :\n• Je pris\n• Tu pris\n• Il/Elle prit\n• Nous prîmes\n• Vous prîtes\n• Ils/Elles prirent";
-                if (temps === "passé composé") return "Prendre (Passé composé) :\n• J'ai pris\n• Tu as pris\n• Il/Elle a pris\n• Nous avons pris\n• Vous avez pris\n• Ils/Elles ont pris";
-            }
-
-            // --- MOTEUR 1ER GROUPE (-ER) ---
-            if (verbe.endsWith("er") && verbe !== "aller") {
-                let rad = verbe.slice(0, -2);
-                if (temps === "présent") return `${verbe} (Présent) :\n• Je ${rad}e\n• Tu ${rad}es\n• Il/Elle ${rad}e\n• Nous ${rad}ons\n• Vous ${rad}ez\n• Ils/Elles ${rad}ent`;
-                if (temps === "imparfait") return `${verbe} (Imparfait) :\n• Je ${rad}ais\n• Tu ${rad}ais\n• Il/Elle ${rad}ait\n• Nous ${rad}ions\n• Vous ${rad}iez\n• Ils/Elles ${rad}aient`;
-                if (temps === "futur") return `${verbe} (Futur simple) :\n• Je ${verbe}ai\n• Tu ${verbe}as\n• Il/Elle ${verbe}a\n• Nous ${verbe}ons\n• Vous ${verbe}ez\n• Ils/Elles ${verbe}ont`;
-                if (temps === "passé simple") return `${verbe} (Passé simple) :\n• Je ${rad}ai\n• Tu ${rad}as\n• Il/Elle ${rad}a\n• Nous ${rad}âmes\n• Vous ${rad}âtes\n• Ils/Elles ${rad}èrent`;
-                if (temps === "passé composé") return `${verbe} (Passé composé) :\n• J'ai ${rad}é\n• Tu as ${rad}é\n• Il/Elle a ${rad}é\n• Nous avons ${rad}é\n• Vous avez ${rad}é\n• Ils/Elles ont ${rad}é`;
-                if (temps === "plus-que-parfait") return `${verbe} (Plus-que-parfait) :\n• J'avais ${rad}é\n• Tu avais ${rad}é\n• Il/Elle avait ${rad}é\n• Nous avions ${rad}é\n• Vous aviez ${rad}é\n• Ils/Elles avaient ${rad}é`;
-                if (temps === "subjonctif") return `${verbe} (Subjonctif présent) :\n• Que je ${rad}e\n• Que tu ${rad}es\n• Qu'il/elle ${rad}e\n• Que nous ${rad}ions\n• Que vous ${rad}iez\n• Qu'ils/elles ${rad}ent`;
-                if (temps === "conditionnel") return `${verbe} (Conditionnel présent) :\n• Je ${verbe}ais\n• Tu ${verbe}ais\n• Il/Elle ${verbe}ait\n• Nous ${verbe}ions\n• Vous ${verbe}iez\n• Ils/Elles ${verbe}aient`;
-            }
-
-            // --- MOTEUR 2E GROUPE (-IR) ---
-            if (verbe.endsWith("ir")) {
-                let rad = verbe.slice(0, -2);
-                let radiss = rad + "iss";
-                if (temps === "présent") return `${verbe} (Présent) :\n• Je ${rad}is\n• Tu ${rad}is\n• Il/Elle ${rad}it\n• Nous ${radiss}ons\n• Vous ${radiss}ez\n• Ils/Elles ${radiss}ent`;
-                if (temps === "imparfait") return `${verbe} (Imparfait) :\n• Je ${radiss}ais\n• Tu ${radiss}ais\n• Il/Elle ${radiss}ait\n• Nous ${radiss}ions\n• Vous ${radiss}iez\n• Ils/Elles ${radiss}aient`;
-                if (temps === "futur") return `${verbe} (Futur simple) :\n• Je ${verbe}ai\n• Tu ${verbe}as\n• Il/Elle ${verbe}a\n• Nous ${verbe}ons\n• Vous ${verbe}ez\n• Ils/Elles ${verbe
+        });
+    </script>
+</body>
+</html>
