@@ -1,35 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASRAFUL - Histoire-Géo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 440px;
+            height: 650px;
+            background: #1e293b;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+        .chat-header {
+            background: #0284c7;
+            color: white;
+            padding: 16px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.3); }
+        .chat-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .message {
+            max-width: 88%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            font-size: 0.93rem;
+            line-height: 1.5;
+            white-space: pre-line;
+        }
+        .message.bot { background: #334155; color: #f8fafc; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .message.user { background: #0284c7; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-input-area {
+            display: flex;
+            padding: 12px;
+            background: #0f172a;
+            border-top: 1px solid #334155;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px 14px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        .chat-input-area button {
+            background: #0284c7;
+            color: white;
+            border: none;
+            padding: 0 16px;
+            margin-left: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .chat-input-area button:hover { background: #0ea5e9; }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>ASRAFUL - Histoire-Géo</span>
+            <a href="index.html" class="back-btn">Menu 🏠</a>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">Coucou ma pupuce ! Tape ton chapitre ou ton mot-clé d'histoire (ex: "moyen âge", "islam", "révolution"). Le bouton envoyer est opérationnel !</div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="userInput" placeholder="Ex: Moyen Âge..." autofocus>
+            <button id="sendBtn">Envoyer</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputField = document.getElementById("userInput");
+            const sendButton = document.getElementById("sendBtn");
+            const messagesContainer = document.getElementById("chatMessages");
+
+            function ajouterMessage(texte, expediteur) {
+                const div = document.createElement("div");
+                div.classList.add("message", expediteur);
+                div.textContent = texte;
+                messagesContainer.appendChild(div);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
             function repondreHistoire(texte) {
                 const t = texte.toLowerCase();
                 
-                // --- THÈME 1 : LE MOYEN ÂGE & OCCIDENT FÉODAL ---
-                if (t.includes("moyen âge") || t.includes("moyen age") || t.includes("feodalite") || t.includes("féodalité") || t.includes("seigneur")) {
-                    return "👑 **L'Occident féodal (Moyen Âge) :**\n" +
-                           "• **Chronologie :** De la fin de l'Empire romain (476) à la découverte de l'Amérique (1492).\n" +
-                           "• **La Société (les 3 ordres) :** \n" +
-                           "  1. Ceux qui prient (le clergé : moines, prêtres, évêques).\n" +
-                           "  2. Ceux qui combattent (la noblesse : seigneurs, chevaliers).\n" +
-                           "  3. Ceux qui travaillent (la paysannerie, qui représente plus de 80% de la population).\n" +
-                           "• **Le Château fort :** Symbole du pouvoir du seigneur, il sert à se protéger et à dominer les terres (les fiefs) cultivées par les serfs et vilains.\n" +
-                           "• **L'Église :** Elle encadre toute la vie des gens, rythme les journées (les cathédrales gothiques) et impose la religion chrétienne en Occident.";
+                if (t.includes("moyen âge") || t.includes("moyen age") || t.includes("feodalite") || t.includes("féodalité") || t.includes("seigneur") || t.includes("occident")) {
+                    return "👑 L'Occident féodal (Moyen Âge) :\n• Chronologie : De la fin de l'Empire romain (476) à 1492.\n• La Société : Ceux qui prient (clergé), ceux qui combattent (noblesse), ceux qui travaillent (paysannerie).\n• Le Château fort : Protège les terres (les fiefs) cultivées par les paysans (serfs et vilains).\n• L'Église : Omniprésente, elle encadre la vie et impulse l'art gothique des cathédrales.";
                 }
-                // --- THÈME 2 : BYZANCE ET LE MONDE MUSULMAN ---
-                else if (t.includes("islam") || t.includes("byzance") || t.includes("empire romain d'orient") || t.includes("mahomet") || t.includes("bagdad")) {
-                    return "🕌 **Byzance et le monde musulman (VIIe - XIIIe siècle) :**\n" +
-                           "• **L'Empire Byzantin :** C'est l'ancien Empire romain d'Orient qui continue avec sa capitale Constantinople. Il est chrétien (orthodoxe) et dirigé par un empereur (le basileus).\n" +
-                           "• **Naissance de l'Islam :** Naît en Arabie au VIIe siècle avec le prophète Mahomet. La religion se propage très vite au Moyen-Orient, en Afrique du Nord et en Espagne.\n" +
-                           "• **Les califats :** Des empires immenses dirigés par des califes (comme à Bagdad ou Cordoue). Ce sont de grands carrefours de commerce, de sciences, de maths et de philosophie.\n" +
-                           "• **Les contacts :** Guerres mais aussi énormes échanges économiques et culturels en Méditerranée entre chrétiens et musulmans.";
+                else if (t.includes("islam") || t.includes("byzance") || t.includes("mahomet") || t.includes("califat") || t.includes("bagdad")) {
+                    return "🕌 Byzance et le monde musulman (VIIe - XIIIe s.) :\n• Empire Byzantin : Ancien Empire d'Orient chrétien orthodoxe, capitale Constantinople.\n• Islam : Naît en Arabie au VIIe siècle avec Mahomet, s'étend au Moyen-Orient et en Afrique.\n• Califats : Bagdad et Cordoue, grands carrefours du commerce, des sciences et des maths.";
                 }
-                // --- THÈME 3 : TEMPS MODERNES & ÉPOQUE CONTEMPORAINE (Jusqu'à 2026) ---
-                else if (t.includes("revolution") || t.includes("révolution") || t.includes("1789") || t.includes("epoque moderne") || t.includes("epoque contemporaine") || t.includes("xx") || t.includes("actuel")) {
-                    return "🚀 **Des Temps Modernes à nos jours :**\n" +
-                           "• **Renaissance & Temps Modernes (XVIe-XVIIIe) :** Grandes découvertes (Christophe Colomb en 1492), imprimerie de Gutenberg, arts redécouvrant l'Antiquité.\n" +
-                           "• **La Révolution française (1789) :** Fin de la monarchie absolue de Louis XVI, DDHC (Droits de l'Homme et du Citoyen), passage à la République.\n" +
-                           "• **XIXe siècle (Révolution industrielle) :** L'apparition des usines, du charbon, du train, et l'exode rural.\n" +
-                           "• **XXe siècle & Actuel (Jusqu'en 2026) :** Les deux guerres mondiales, la construction de l'Union Européenne, l'ère du numérique, d'Internet et des technologies actuelles.\n\n" +
-                           "💡 *Dis-moi un mot précis (ex: 'Moyen Âge', 'Islam', 'Révolution') et je t'affiche tout le détail direct !*";
+                else if (t.includes("guerre de cent ans") || t.includes("jeanne d'arc") || t.includes("monarchie")) {
+                    return "⚔️ Affirmation de l'État monarchique :\n• Rois : Renforcent leur pouvoir face aux seigneurs (Philippe Auguste, Saint Louis).\n• Guerre de Cent Ans (1337-1453) : Oppose la France à l'Angleterre. Jeanne d'Arc incarne le sursaut français.";
                 }
-                
-                // Réponse par défaut si le mot n'est pas reconnu
-                return `📚 Cours d'histoire : Je n'ai pas de détails précis sur "${texte}". Essaie de taper "Moyen Âge", "Islam" ou "Révolution" !`;
+                else if (t.includes("renaissance") || t.includes("decouverte") || t.includes("colomb") || t.includes("gutenberg") || t.includes("1492")) {
+                    return "🌍 L'expansion du monde (XVe-XVIIe s.) :\n• Renaissance : Née en Italie, se diffuse grâce à l'imprimerie de Gutenberg.\n• Grandes Découvertes : Christophe Colomb atteint l'Amérique en 1492, Vasco de Gama trouve la route des Indes.";
+                }
+                else if (t.includes("lumieres") || t.includes("lumières") || t.includes("voltaire") || t.includes("rousseau")) {
+                    return "💡 Le siècle des Lumières (XVIIIe s.) :\n• Philosophes : Voltaire, Rousseau, Montesquieu critiquent l'absolutisme et prônent la liberté et l'égalité.";
+                }
+                else if (t.includes("revolution") || t.includes("révolution") || t.includes("1789") || t.includes("napoleon") || t.includes("napoléon")) {
+                    return "🇫🇷 La Révolution française (1789) :\n• Événements : Chute de la monarchie absolue de Louis XVI, DDHC (Droits de l'Homme), République.\n• Napoléon : Stabilise la France et crée le Code civil.";
+                }
+                else if (t.includes("industrie") || t.includes("usine") || t.includes("xixe") || t.includes("19e")) {
+                    return "🏭 L'industrialisation au XIXe siècle :\n• Progrès : Utilisation du charbon, machine à vapeur, chemins de fer.\n• Société : Exode rural et essor de la classe ouvrière (prolétariat).";
+                }
+                else if (t.includes("guerre") || t.includes("1914") || t.includes("1939") || t.includes("shoah") || t.includes("atome")) {
+                    return "⚠️ Les conflits mondiaux du XXe siècle :\n• 1ère (1914-1918) et 2nde (1939-1945) Guerres mondiales.\n• Shoah, nazisme et usage de l'arme atomique.";
+                }
+                else if (t.includes("actuel") || t.includes("2026") || t.includes("europe") || t.includes("numerique") || t.includes("mondialisation")) {
+                    return "🌐 Vers le monde actuel (Jusqu'en 2026) :\n• Construction européenne pour la paix.\n• Mondialisation, essor d'Internet, des réseaux sociaux et de l'intelligence artificielle en 2026.";
+                }
+
+                return `📚 Cours d'histoire : Pas de détails exacts pour "${texte}". Essaie de taper "Moyen Âge", "Islam", "Renaissance", "Révolution" ou "Guerre" !`;
             }
+
+            function envoyerMessage() {
+                const texte = inputField.value.trim();
+                if (!texte) return;
+                
+                ajouterMessage(texte, "user");
+                inputField.value = "";
+                
+                setTimeout(() => {
+                    const reponse = repondreHistoire(texte);
+                    ajouterMessage(reponse, "bot");
+                }, 200);
+            }
+
+            if (sendButton) {
+                sendButton.addEventListener("click", envoyerMessage);
+            }
+            if (inputField) {
+                inputField.addEventListener("keydown", function(e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        envoyerMessage();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
