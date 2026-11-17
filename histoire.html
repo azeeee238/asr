@@ -100,37 +100,13 @@
             <a href="index.html" class="back-btn">Menu 🏠</a>
         </div>
         <div class="chat-messages" id="chatMessages">
-            <div class="message bot">Coucou ma pupuce ! Tape ton chapitre ou ton mot-clé d'histoire (ex: "moyen âge", "islam", "révolution"). Le bouton envoyer est opérationnel !</div>
+            <div class="message bot">Coucou ma pupuce ! Tape ton chapitre, une date (ex: 1789, 1492) ou un mot-clé. Le bouton envoyer est opérationnel !</div>
         </div>
         <div class="chat-input-area">
-            <input type="text" id="userInput" placeholder="Ex: Moyen Âge..." autofocus>
+            <input type="text" id="userInput" placeholder="Ex: 1789 ou Moyen Âge..." autofocus>
             <button id="sendBtn">Envoyer</button>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const inputField = document.getElementById("userInput");
-            const sendButton = document.getElementById("sendBtn");
-            const messagesContainer = document.getElementById("chatMessages");
-
-            function ajouterMessage(texte, expediteur) {
-                const div = document.createElement("div");
-                div.classList.add("message", expediteur);
-                div.textContent = texte;
-                messagesContainer.appendChild(div);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            function repondreHistoire(texte) {
-                const t = texte.toLowerCase();
-                
-                if (t.includes("moyen âge") || t.includes("moyen age") || t.includes("feodalite") || t.includes("féodalité") || t.includes("seigneur") || t.includes("occident")) {
-                    return "👑 L'Occident féodal (Moyen Âge) :\n• Chronologie : De la fin de l'Empire romain (476) à 1492.\n• La Société : Ceux qui prient (clergé), ceux qui combattent (noblesse), ceux qui travaillent (paysannerie).\n• Le Château fort : Protège les terres (les fiefs) cultivées par les paysans (serfs et vilains).\n• L'Église : Omniprésente, elle encadre la vie et impulse l'art gothique des cathédrales.";
-                }
-                else if (t.includes("islam") || t.includes("byzance") || t.includes("mahomet") || t.includes("califat") || t.includes("bagdad")) {
-                    return "🕌 Byzance et le monde musulman (VIIe - XIIIe s.) :\n• Empire Byzantin : Ancien Empire d'Orient chrétien orthodoxe, capitale Constantinople.\n• Islam : Naît en Arabie au VIIe siècle avec Mahomet, s'étend au Moyen-Orient et en Afrique.\n• Califats : Bagdad et Cordoue, grands carrefours du commerce, des sciences et des maths.";
-                }
                 else if (t.includes("guerre de cent ans") || t.includes("jeanne d'arc") || t.includes("monarchie")) {
                     return "⚔️ Affirmation de l'État monarchique :\n• Rois : Renforcent leur pouvoir face aux seigneurs (Philippe Auguste, Saint Louis).\n• Guerre de Cent Ans (1337-1453) : Oppose la France à l'Angleterre. Jeanne d'Arc incarne le sursaut français.";
                 }
@@ -153,7 +129,7 @@
                     return "🌐 Vers le monde actuel (Jusqu'en 2026) :\n• Construction européenne pour la paix.\n• Mondialisation, essor d'Internet, des réseaux sociaux et de l'intelligence artificielle en 2026.";
                 }
 
-                return `📚 Cours d'histoire : Pas de détails exacts pour "${texte}". Essaie de taper "Moyen Âge", "Islam", "Renaissance", "Révolution" ou "Guerre" !`;
+                return `📚 Cours d'histoire : Pas de détails exacts pour "${texte}". Essaie de taper une date (ex: 1789) ou "Moyen Âge" !`;
             }
 
             function envoyerMessage() {
@@ -184,4 +160,3 @@
     </script>
 </body>
 </html>
-
